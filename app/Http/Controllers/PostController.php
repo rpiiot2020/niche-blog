@@ -16,6 +16,7 @@ class PostController extends Controller
         return view('posts.index', [
             'posts' => Post::search($request->input('q'))
                              ->with('author', 'likes')
+                             ->where('status',1)
                              ->withCount('comments', 'thumbnail', 'likes')
                              ->latest()
                              ->paginate(20)

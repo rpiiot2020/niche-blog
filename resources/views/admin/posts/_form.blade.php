@@ -31,13 +31,20 @@
     </div>
 </div>
 
-<div class="form-group">
-    {!! Form::label('thumbnail_id', __('posts.attributes.thumbnail')) !!}
-    {!! Form::select('thumbnail_id', $media, null, ['placeholder' => __('posts.placeholder.thumbnail'), 'class' => 'form-control' . ($errors->has('thumbnail_id') ? ' is-invalid' : '')]) !!}
+<div class="form-row">
+    <div class="form-group col-md-6">
+        {!! Form::label('thumbnail_id', __('posts.attributes.thumbnail')) !!}
+        {!! Form::select('thumbnail_id', $media, null, ['placeholder' => __('posts.placeholder.thumbnail'), 'class' => 'form-control' . ($errors->has('thumbnail_id') ? ' is-invalid' : '')]) !!}
 
-    @error('thumbnail_id')
+        @error('thumbnail_id')
         <span class="invalid-feedback">{{ $message }}</span>
-    @enderror
+        @enderror
+    </div>
+
+    <div class="form-group col-md-6">
+        {!! Form::label('status', 'Status') !!}
+        {!! Form::select('status', $status, null, ['class' => 'form-control' . ($errors->has('status') ? ' is-invalid' : '')]) !!}
+    </div>
 </div>
 
 

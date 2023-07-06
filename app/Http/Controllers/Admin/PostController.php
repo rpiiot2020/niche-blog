@@ -19,7 +19,7 @@ class PostController extends Controller
     public function index(): View
     {
         return view('admin.posts.index', [
-            'posts' => Post::withCount('comments', 'likes')->with('author')->latest()->paginate(50)
+            'posts' => Post::where('status','<>',3)->withCount('comments', 'likes')->with('author')->latest()->paginate(50)
         ]);
     }
 
@@ -28,9 +28,16 @@ class PostController extends Controller
      */
     public function edit(Post $post): View
     {
+        $user = User::authors()->pluck('name', 'id');
+        $status = [
+            0 => 'Draft',
+            1 => 'Aktif',
+            2 => 'Tak Aktif'
+        ];
         return view('admin.posts.edit', [
             'post' => $post,
-            'users' => User::authors()->pluck('name', 'id'),
+            'users' => $user,
+            'status' => $status,
             'media' => MediaLibrary::first()->media()->get()->pluck('name', 'id')
         ]);
     }
@@ -61,7 +68,7 @@ class PostController extends Controller
      */
     public function update(PostsRequest $request, Post $post): RedirectResponse
     {
-        $post->update($request->only(['title', 'content', 'posted_at', 'author_id', 'thumbnail_id']));
+        $post->update($request->only(['title', 'content', 'posted_at', 'author_id', 'thumbnail_id','status']));
 
         return redirect()->route('admin.posts.edit', $post)->withSuccess(__('posts.updated'));
     }
@@ -71,6 +78,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+//        dd('ff');
         $post->delete();
 
         return redirect()->route('admin.posts.index')->withSuccess(__('posts.deleted'));
