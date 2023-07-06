@@ -47,8 +47,15 @@ class PostController extends Controller
      */
     public function create(Request $request): View
     {
+        $status = [
+            0 => 'Draft',
+            1 => 'Aktif',
+            2 => 'Tak Aktif'
+        ];
+
         return view('admin.posts.create', [
             'users' => User::authors()->pluck('name', 'id'),
+            'status' => $status,
             'media' => MediaLibrary::first()->media()->get()->pluck('name', 'id')
         ]);
     }
